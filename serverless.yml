@@ -1,0 +1,24 @@
+# serverless.yml
+service: lambda-chatbot
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: sa-east-1
+  environment:
+    DYNAMO_TABLA: ContextosUsuarios
+    OPENAI_API_KEY: ${ssm:/respaldos-bot/openai-key}
+    WHATSAPP_ACCESS_TOKEN: ${ssm:/respaldos-bot/whatsapp-token}
+    PAGE_ACCESS_TOKEN: ${ssm:/respaldos-bot/facebook-token}
+    FACEBOOK_VERIFY_TOKEN: ${ssm:/respaldos-bot/verify-token}
+
+functions:
+  webhook:
+    handler: index.webhookHandler
+    events:
+      - http:
+          path: webhook
+          method: post
+      - http:
+          path: webhook
+          method: get
